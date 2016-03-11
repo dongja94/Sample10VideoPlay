@@ -1,9 +1,12 @@
 package com.example.dongja94.samplevideoplay;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -24,5 +27,26 @@ public class MainActivity extends AppCompatActivity {
                 videoView.start();
             }
         });
+
+        Button btn = (Button)findViewById(R.id.btn_list);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, VideoListActivity.class), RC_VIDEO_LIST);
+            }
+        });
+    }
+
+    private static final int RC_VIDEO_LIST = 1;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_VIDEO_LIST) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                videoView.setVideoURI(uri);
+            }
+        }
     }
 }
